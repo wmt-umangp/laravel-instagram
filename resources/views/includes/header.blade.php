@@ -12,9 +12,11 @@
                 <ul class="navbar-nav ms-5">
                     <li class="nav-item me-4">
                         {{-- <a class="nav-link {{(request()->is('dashboard')) ? 'active' : '' }}" href="{{route('dashboard')}}">Home</a> --}}
+                        <a href="#" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item me-4">
                         {{-- <a class="nav-link {{(request()->is('books*')) ? 'active' : '' }}" href="{{route('showbooks')}}">Book</a> --}}
+                        <a href="#" class="nav-link">Create Post</a>
                     </li>
                     <li class="nav-item me-4">
                         {{-- <a class="nav-link {{ (request()->is('authors*')) ? 'active' : '' }}" href="{{route('showauthors')}}">Author</a> --}}

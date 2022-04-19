@@ -17,14 +17,15 @@
                 <div>
                     <form action="{{route('signin')}}" method="POST" id="signin">
                         @csrf
-                        <div class="mb-3 mt-3">
+                        <div class="mb-3 mt-3 pmd-textfield">
                             <label for="uname" class="form-label">Username</label>
                             <input type="text" class="form-control border-1 rounded-0" name="uname" id="uname" placeholder="Enter Username">
                             @if ($errors->has('uname'))
                                 <span class="text-danger">*{{ $errors->first('uname') }}</span>
                             @endif
                         </div>
-                        <div class="mb-3 mt-3">
+
+                        <div class="mb-3 mt-3 pmd-textfield">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control border-1 rounded-0" id="password" placeholder="Enter Password" name="password">
                             @if ($errors->has('password'))
@@ -42,4 +43,26 @@
         </div>
     </div>
 </div>
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+(function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+</script>
 @endsection

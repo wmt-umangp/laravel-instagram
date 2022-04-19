@@ -41,9 +41,6 @@
 
 <body>
     @include('includes.header')
-    {{-- <div id="divbg">
-        @yield('bg_img')
-    </div>--}}
     <div class="container">
         @yield('content')
     </div>

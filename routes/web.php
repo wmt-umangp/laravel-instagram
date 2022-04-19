@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PostController;
 
 // to display signup page
 Route::get('/signup',[UserController::class,'showsignup'])->name('showsignup');
@@ -16,7 +17,7 @@ Route::get('/',[UserController::class,'showsignin'])->name('showsignin');
 Route::post('/signinUser',[UserController::class,'postSignIn'])->name('signin');
 
 //for homepage
-Route::get('/home',[UserController::class,'getHome'])->name('home');
+Route::get('/home',[PostController::class,'getHome'])->name('home');
 
 //to display user account details
 Route::get('/home/account',[UserController::class,'getAccount'])->name('account');
@@ -26,6 +27,13 @@ Route::get('/home/account/showeditform',[UserController::class,'editAccountDispl
 
 //for edit account
 Route::post('/home/account/editaccount',[UserController::class,'postSaveAccount'])->name('editUserAccount');
+
+
+//to show create post page
+Route::get('/addpost',[PostController::class,'getaddForm'])->name('showaddpost');
+
+//for add post
+Route::post('/addpost/savepost',[PostController::class,'addPost'])->name('addpost');
 
 // for logout
 Route::get('/logout',[UserController::class,'getLogout'])->name('logout');

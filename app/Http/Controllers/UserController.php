@@ -54,9 +54,6 @@ class UserController extends Controller
         return redirect()->back()->with('logerror','Invalid User Credentials');
 
     }
-    public function getHome(){
-        return view('homepage');
-    }
     public function getAccount(){
         return view('User.account',['user'=>Auth::user()]);
     }

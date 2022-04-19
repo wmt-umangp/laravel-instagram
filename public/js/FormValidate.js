@@ -2,6 +2,10 @@ $(document).ready(function () {
     jQuery.validator.addMethod("lettersonly", function(value, element) {
         return this.optional(element) || /^[a-z\s]+$/i.test(value);
         }, "Only alphabetical characters");
+    $.validator.addMethod('filesize', function (value, element, param) {
+        return this.optional(element) || (element.files[0].size <= param * 500000)
+    }, 'File size must be less than {0} MB');
+
     $('#signup').validate({
         rules: {
             'name':{
@@ -63,7 +67,19 @@ $(document).ready(function () {
                 equalTo: "Confirm Password must be same as password"
             }
         },
-        submitHandler: function (form) {
+        errorElement: "em",
+	    errorPlacement: function ( error, element ) {
+	        // Add the `invalid-feedback` class to the error element
+            error.insertAfter(element)
+	        error.addClass( "invalid-feedback" );
+	    },
+	    highlight: function ( element, errorClass, validClass ) {
+	        $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+	    },
+	    unhighlight: function (element, errorClass, validClass) {
+	        $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+	    },
+        submitHandler: function(form){
             form.submit();
         }
     });
@@ -88,9 +104,18 @@ $(document).ready(function () {
                 minlength: 'Password must be 8 characters long',
             },
         },
-        submitHandler:function(form){
-            form.submit();
-        }
+        errorElement: "em",
+	    errorPlacement: function ( error, element ) {
+	        // Add the `invalid-feedback` class to the error element
+            error.insertAfter(element)
+	        error.addClass( "invalid-feedback" );
+	    },
+	    highlight: function ( element, errorClass, validClass ) {
+	        $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+	    },
+	    unhighlight: function (element, errorClass, validClass) {
+	        $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+	    }
     });
     $('#account').validate({
         rules: {
@@ -131,7 +156,66 @@ $(document).ready(function () {
                 filesize: 'Image Size Must be less than 3MB'
             },
         },
-        submitHandler: function (form) {
+        errorElement: "em",
+	    errorPlacement: function ( error, element ) {
+	        // Add the `invalid-feedback` class to the error element
+            error.insertAfter(element)
+	        error.addClass( "invalid-feedback" );
+	    },
+	    highlight: function ( element, errorClass, validClass ) {
+	        $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+	    },
+	    unhighlight: function (element, errorClass, validClass) {
+	        $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+	    },
+        submitHandler: function(form){
+            form.submit();
+        }
+    });
+    $('#addpost').validate({
+        rules:{
+            'title':{
+                required:true,
+                maxlength:120,
+            },
+            'desc':{
+                required:true,
+                maxlength:300,
+            },
+            'post_image':{
+                required:true,
+                extension: "jpg|jpeg|png|gif|mp4|ogg|ogv|avi|mpeg|mov|wmv|flv|mkv",
+                filesize: 3,
+            },
+        },
+        messages:{
+            'title':{
+                required:'Please Enter Post Title',
+                maxlength:'Maximum 120 characters allowed',
+            },
+            'desc':{
+                required:'Please Enter Description',
+                maxlength:'Maximum 300 characters allowed',
+            },
+            'post_image':{
+                required:'Please upload Profile Image',
+                extension: 'Only image or video type jpg,jpeg,png,gif,mp4,ogg,ogv,avi,mpe?g,mov,wmv,flv,mkv is allowed!!',
+                filesize: 'File Size Must be less than 5MB',
+            }
+        },
+        errorElement: "em",
+	    errorPlacement: function ( error, element ) {
+	        // Add the `invalid-feedback` class to the error element
+            error.insertAfter(element)
+	        error.addClass( "invalid-feedback" );
+	    },
+	    highlight: function ( element, errorClass, validClass ) {
+	        $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+	    },
+	    unhighlight: function (element, errorClass, validClass) {
+	        $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+	    },
+        submitHandler: function(form){
             form.submit();
         }
     });
