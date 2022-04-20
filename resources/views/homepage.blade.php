@@ -10,56 +10,89 @@
         <h1>Welcome, {{Auth::user()->name}}</h1>
     </div>
 </div> --}}
+
+    <head>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+    </head>
+
     <div class="container px-5">
         <div class="row px-5 mt-5">
-            <div class="col-4 mt-5 text-end">
+            <div class="col-12 col-md-4 mt-5 text-end">
                 <img src="{{ asset('storage/user_images/' . $user->profile_image) }}" alt="User_profile" width="150"
                     height="150" class="rounded-circle">
             </div>
 
-            <div class="col-6 mt-5">
-                <p class="display-6 ms-5">{{ $user->uname }}</p>
-                <p class="ms-5">{{ $user->name }}</p>
+            <div class="col-12 col-md-6 mt-5">
+                <p class="display-6 ms-md-5">{{ $user->uname }}</p>
+                <p class="ms-md-5 text-center text-md-start">{{ $user->name }}</p>
             </div>
-            <div class="col-2 mt-5">
+            <div class="col-12 col-md-2 mt-md-5 text-center">
                 <a href="{{ route('showaddpost') }}" class="btn btn-primary mt-5">Add Post</a>
             </div>
         </div>
-        <div class="row mt-5">
-            <div class="col d-flex justify-content-center">
-                <ul class="nav nav-pills" id="pills-tab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
-                            data-bs-target="#post-image" type="button" role="tab" aria-controls="post-image"
-                            aria-selected="true">Images</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
-                            data-bs-target="#post-video" type="button" role="tab" aria-controls="post-video"
-                            aria-selected="false">Video</button>
-                    </li>
 
-                </ul>
+        <div class="row g-5 mt-5 justify-content-center">
+            <div class="col-12">
+                <form method="GET">
+                    @csrf
+                    <select name="filter" id="filter" class="form-control" >
+                        <option value="" selected>Select Filter</option>
+                        <option value="all">All Post</option>
+                        <option value="image">Image</option>
+                        <option value="video">Video</option>
+                    </select>
+                </form>
             </div>
-        </div>
-        <div class="tab-content mb-5">
-            <div class="tab-pane fade show active" id="post-image" role="tabpanel" aria-labelledby="pills-home-tab">
-                <div class="row g-5">
-                    <div class="col-12">
-                        @foreach ($post as $pm)
+            @if (Request::input('filter'))
+                {{dd(Request::input('filter'))}}
+            @endif
+            @foreach ($post as $pm)
+                @if ($pm->media_type == 1)
+                    <div class="col-12 col-md-3">
+                        <a href="{{route('showpostdetails',['sid'=>$pm->id])}}"  class="show-post">
                             <img src="{{ asset('storage/post_images/User-' . $user->id . '_' . $user->uname . '/' . $pm->post_media) }}"
-                                alt="" width="200" height="200" class="me-5 mt-5">
-                        @endforeach
+                                alt="post-images" width="200" height="200">
+                        </a>
                     </div>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="post-video" role="tabpanel" aria-labelledby="pills-profile-tab">
-                <div class="row mt-5">
-                    <div class="col-12">
-                        hello
+                @elseif ($pm->media_type == 0)
+                    <div class="col-12 col-md-3">
+                        <a href="{{route('showpostdetails',['sid'=>$pm->id])}}" data-showid={{ $pm->id }} class="show-post">
+                            <video autoplay loop muted width="200" height="200" style="line-height:0;object-fit:cover;">
+                                <source
+                                    src="{{ asset('storage/post_images/User-' . $user->id . '_' . $user->uname . '/' . $pm->post_media) }}">
+                            </video>
+                        </a>
                     </div>
-                </div>
-            </div>
+                @endif
+            @endforeach
         </div>
     </div>
+
+  <script>
+      function filterpost(){
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        // console.log('Hello');
+        var type=$('#filter').val();
+        // console.log(type);
+        var url="{{route('filterpost')}}";
+
+        $.ajax({
+            type: "GET",
+            url: url,
+            data: {
+                filter_type:type,
+            },
+            success: function(data){
+              console.log(data)
+            }
+        });
+    }
+  </script>
 @endsection
+
+
+

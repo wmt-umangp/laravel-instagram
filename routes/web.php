@@ -35,6 +35,22 @@ Route::get('/addpost',[PostController::class,'getaddForm'])->name('showaddpost')
 //for add post
 Route::post('/addpost/savepost',[PostController::class,'addPost'])->name('addpost');
 
+//for show post details
+Route::get('/showpost/{sid}',[PostController::class,'showpostdetails'])->name('showpostdetails');
+
+//for post delete
+Route::delete('/showpost/deletepost/{did}', [PostController::class, 'deletepost'])->name('deletepost');
+
+//for post edit
+Route::get('/showpost/editpost/{eid}',[PostController::class,'editPost'])->name('editpost');
+
+//for post update
+Route::post('/showpost/updatepost/{uid}',[PostController::class,'updatePost'])->name('updatepost');
+
+
+//for post filter
+Route::get('/filterpost',[PostController::class,'filterpost'])->name('filterpost');
+
 // for logout
 Route::get('/logout',[UserController::class,'getLogout'])->name('logout');
 
