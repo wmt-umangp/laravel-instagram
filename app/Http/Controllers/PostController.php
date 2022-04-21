@@ -5,16 +5,27 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AddPostFormRequest;
 use App\Http\Requests\EditPostFormRequest;
 use App\Models\Post;
+use App\Models\Like;
+use App\Models\User;
 use Auth, Controllers, Session, Storage;
 class PostController extends Controller
 {
     public function getHome(){
+        return  view('welcome');
+    }
+    public function getownpost(){
         $user=Auth::user();
         $post=Post::orderBy('created_at','desc')->get()->where('user_id',$user->id);
         return view('homepage',array('user' => $user,'post'=>$post));
     }
     public function getaddForm(){
         return view('Post.addpost');
+    }
+    public function getallposts(){
+        $post=Post::all();
+        // dd($post);
+        // $user=User::all();
+        return view('Post.getallpost',['post'=>$post]);
     }
     public function addPost(AddPostFormRequest $request){
         $post= new Post;
@@ -85,23 +96,51 @@ class PostController extends Controller
         $post->update();
         return redirect()->route('home')->with('success','Post Details Updated Successfully!!');
     }
-    public function filterpost(Request $request){
-        // if($request['filter_type']=='all'){
-        //     $post=new Post;
-        //     $post->get('post_media');
-        // }
-        // return response()->json('hello bye');
-        // $hello= "Hello";
-        // return response()->json($hello);
-        if($request['filter_type']=='all'){
-            $post=Post::all('post_media');
-            return response()->json($post);
-        }
-        else if($request['filter_type']=='image'){
-            $post1=Post::all('post_media')->where('media_type',1);
-            return response()->json($post1);
-        }
+    // public function filterpost(Request $request){
 
-        // return response()->json($post);
+    //     // if($request['filter_type']=='all'){
+    //     //     $post=Post::all('post_media');
+    //     //     return response()->json($post);
+    //     // }
+    //     // elseif($request['filter_type']=='image'){
+    //     //     $post1=Post::where('media_type',1)->get('post_media');
+    //     //     return response()->json($post1);
+    //     // }
+    //     // elseif($request['filter_type']=='video'){
+    //     //     $post2=Post::where('media_type',0)->get('post_media');
+    //     //     return response()->json($post2);
+    //     // }
+    //     // if($request->filter=='image'){
+    //     //     // dd($request->filter);
+    //     //     $user=Auth::user();
+    //     //     $post1=Post::where('media_type',1)->get('post_media');
+    //     //     return view('homepage',array('user' => $user,'post'=>$post1));
+    //     // }
+    //     // else if($request->filter=='video'){
+    //     //     $user=Auth::user();
+    //     //     $post2=Post::where('media_type',0)->get('post_media');
+    //     //     return view('homepage',array('user' => $user,'post'=>$post2));
+    //     // }
+    // }
+
+    public function save_like(Request $request,$id){
+        $like= new Like;
+        $like->post_id=$id;
+        $like->user_id=Auth::id();
+        $like->like_dislike=1;
+        $like->save();
+        Session::flash('success','you liked the post');
+        return redirect()->back();
+    }
+    //delete desilikes
+    public function save_dislike($id){
+        $like=Like::where('post_id',$id)->where('user_id', Auth::id())->first();
+        $like->delete();
+        Session::flash('success','You Disliked The Post');
+        return redirect()->back();
+    }
+    public function showotherspostdetails($id){
+        $post=Post::find($id);
+        return view('Post.showotherspostdetails',['post'=>$post]);
     }
 }

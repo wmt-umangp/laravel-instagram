@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
 
 // to display signup page
 Route::get('/signup',[UserController::class,'showsignup'])->name('showsignup');
@@ -16,8 +17,11 @@ Route::get('/',[UserController::class,'showsignin'])->name('showsignin');
 // for signin
 Route::post('/signinUser',[UserController::class,'postSignIn'])->name('signin');
 
+//for welcome page
+Route::get('/welcome',[PostController::class,'getHome'])->name('welcome');
+
 //for homepage
-Route::get('/home',[PostController::class,'getHome'])->name('home');
+Route::get('/home',[PostController::class,'getownpost'])->name('home');
 
 //to display user account details
 Route::get('/home/account',[UserController::class,'getAccount'])->name('account');
@@ -47,9 +51,23 @@ Route::get('/showpost/editpost/{eid}',[PostController::class,'editPost'])->name(
 //for post update
 Route::post('/showpost/updatepost/{uid}',[PostController::class,'updatePost'])->name('updatepost');
 
+//to see other users post
+Route::get('/otheruserspost',[PostController::class,'getallposts'])->name('othersposts');
+
+//to see other users post details
+Route::get('/otheruserspost/otheruserspostdetails/{soid}',[PostController::class,'showotherspostdetails'])->name('showotherspostdetails');
+
+//to show add comment
+Route::get('/comments/{cid}',[CommentController::class,'showcommentform'])->name('showcommentform');
+
+//for addcomment
+Route::post('/addcomments',[CommentController::class,'addcomment'])->name('addcomment');
 
 //for post filter
-Route::get('/filterpost',[PostController::class,'filterpost'])->name('filterpost');
+// Route::get('/filterpost',[PostController::class,'filterpost'])->name('filterpost');
+
+Route::get('/like/{id}',[PostController::class,'save_like'])->name('reply.like');
+Route::get('/dislike/{id}',[PostController::class,'save_dislike'])->name('reply.dislike');
 
 // for logout
 Route::get('/logout',[UserController::class,'getLogout'])->name('logout');

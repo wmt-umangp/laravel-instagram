@@ -5,11 +5,7 @@
 @endsection
 
 @section('content')
-    {{-- <div class="d-flex justify-content-center">
-    <div style="position: absolute;top:50%;">
-        <h1>Welcome, {{Auth::user()->name}}</h1>
-    </div>
-</div> --}}
+
 
     <head>
         <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -33,25 +29,22 @@
 
         <div class="row g-5 mt-5 justify-content-center">
             <div class="col-12">
-                <form method="GET">
-                    @csrf
-                    <select name="filter" id="filter" class="form-control" >
-                        <option value="" selected>Select Filter</option>
-                        <option value="all">All Post</option>
-                        <option value="image">Image</option>
+                {{-- <form action="{{route('filterpost')}}" method="get">
+                    <select name="filter" id="filter" class="form-control">
+                        <option value="" selected disabled>Select Filter</option>
+                        {{-- <option value="all">All Post</option> --}}
+                        {{-- <option value="image">Image</option>
                         <option value="video">Video</option>
                     </select>
-                </form>
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </form> --}}
             </div>
-            @if (Request::input('filter'))
-                {{dd(Request::input('filter'))}}
-            @endif
             @foreach ($post as $pm)
                 @if ($pm->media_type == 1)
                     <div class="col-12 col-md-3">
                         <a href="{{route('showpostdetails',['sid'=>$pm->id])}}"  class="show-post">
                             <img src="{{ asset('storage/post_images/User-' . $user->id . '_' . $user->uname . '/' . $pm->post_media) }}"
-                                alt="post-images" width="200" height="200">
+                                alt="post-images" class="imgpost1" width="200" height="200">
                         </a>
                     </div>
                 @elseif ($pm->media_type == 0)
@@ -68,8 +61,8 @@
         </div>
     </div>
 
-  <script>
-      function filterpost(){
+  {{-- <script>
+      $('#filter').on('change',function(){
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -79,6 +72,10 @@
         var type=$('#filter').val();
         // console.log(type);
         var url="{{route('filterpost')}}";
+        var bookimgpath="{{asset(Storage::disk('local')->url('public/bookimg/'))}}"+"/"
+        var imgpath="{{asset('storage/post_images/User-'.Auth::user()->id.'_'.Auth::user()->uname)}}"+"/"
+        console.log(imgpath);
+        // console.log(url,type);
 
         $.ajax({
             type: "GET",
@@ -87,11 +84,20 @@
                 filter_type:type,
             },
             success: function(data){
-              console.log(data)
+                // console.log(data);
+                // console.log(imgpath+data['post_media']);
+                $.each(data, function(key,val) {
+                    // console.log(val);
+                    // console.log(key,val['post_media']);
+                    // console.log(imgpath+val['post_media']);
+                    // $('.imgpost1').attr('src',imgpath+val['post_media']);
+                    // $('source').attr('src',imgpath+val['post_media']);
+                });
             }
         });
-    }
-  </script>
+        // console.log("Hello");
+      });
+  </script> --}}
 @endsection
 
 

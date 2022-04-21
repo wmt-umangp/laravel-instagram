@@ -21,7 +21,7 @@
 
                     <div class="mb-3 mt-3">
                         <label for="desc" class="form-label">Description</label>
-                        <textarea name="desc" class="form-control border-1 rounded-0" id="desc" cols="30" rows="2">{{$post->post_title}}</textarea>
+                        <textarea name="desc" class="form-control border-1 rounded-0" id="desc" cols="30" rows="2">{{$post->post_desc}}</textarea>
                         @if ($errors->has('desc'))
                             <span class="text-danger">*{{ $errors->first('desc') }}</span>
                         @endif
