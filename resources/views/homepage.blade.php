@@ -10,7 +10,7 @@
     <head>
         <meta name="csrf-token" content="{{ csrf_token() }}">
     </head>
-
+    @include('includes.toastr')
     <div class="container px-5">
         <div class="row px-5 mt-5">
             <div class="col-12 col-md-4 mt-5 text-end">
@@ -29,15 +29,21 @@
 
         <div class="row g-5 mt-5 justify-content-center">
             <div class="col-12">
-                {{-- <form action="{{route('filterpost')}}" method="get">
-                    <select name="filter" id="filter" class="form-control">
-                        <option value="" selected disabled>Select Filter</option>
-                        {{-- <option value="all">All Post</option> --}}
-                        {{-- <option value="image">Image</option>
-                        <option value="video">Video</option>
-                    </select>
-                    <button type="submit" class="btn btn-primary">Filter</button>
-                </form> --}}
+                <form action="{{route('home')}}" method="get">
+                    @csrf
+                   <div class="row">
+                        <div class="col-10">
+                            <select name="filter" id="filter" class="form-select">
+                                <option value="all">All Post</option>
+                                <option value="image">Image</option>
+                                <option value="video">Video</option>
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                        </div>
+                   </div>
+                </form>
             </div>
             @foreach ($post as $pm)
                 @if ($pm->media_type == 1)

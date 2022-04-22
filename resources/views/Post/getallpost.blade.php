@@ -7,7 +7,29 @@
 @section('content')
     <div class="container mt-5">
         <div class="row mt-5">
-            @foreach ($post as $pm)
+            <div class="mt-5">
+                <label for="country" class="mb-2 d-block">Select Country</label>
+
+                    <form action="{{route('othersposts')}}" method="get">
+                        @csrf
+                        <div class="row">
+                        <div class="col-10">
+                            <select class="form-select d-inline" name="country" id="country">
+                                <option value="all" selected>All Post</option>
+                                @foreach ($post as $pmu)
+                                        <option value="{{$pmu->country->id}}">{{$pmu->country->country_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                        </div>
+                    </div>
+                    </form>
+
+
+            </div>
+            @foreach ($post1 as $pm)
                 @if ($pm->media_type == 1)
                     <div class="col-3 mt-5">
                         <div>

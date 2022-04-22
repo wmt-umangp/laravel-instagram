@@ -15,6 +15,9 @@ class Post extends Model
     public function likes(){
         return $this->hasMany(Like::class);
     }
+    public function country(){
+        return $this->belongsTo(Country::class,'country_id');
+    }
     public function is_liked_by_auth_user(){
         $id= Auth::id();
         $likers=array();

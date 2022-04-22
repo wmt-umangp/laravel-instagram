@@ -187,6 +187,9 @@ $(document).ready(function () {
                 extension: "jpg|jpeg|png|gif|mp4|ogg|ogv|avi|mpeg|mov|wmv|flv|mkv",
                 filesize: 3,
             },
+            'post_country':{
+                required: true,
+            }
         },
         messages:{
             'title':{
@@ -201,6 +204,9 @@ $(document).ready(function () {
                 required:'Please upload Profile Image',
                 extension: 'Only image or video type jpg,jpeg,png,gif,mp4,ogg,ogv,avi,mpe?g,mov,wmv,flv,mkv is allowed!!',
                 filesize: 'File Size Must be less than 5MB',
+            },
+            'post_country':{
+                required:'Please select Post Country',
             }
         },
         errorElement: "em",

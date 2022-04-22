@@ -7,26 +7,39 @@ use App\Http\Requests\EditPostFormRequest;
 use App\Models\Post;
 use App\Models\Like;
 use App\Models\User;
+use App\Models\Country;
 use Auth, Controllers, Session, Storage;
 class PostController extends Controller
 {
     public function getHome(){
         return  view('welcome');
     }
-    public function getownpost(){
+    public function getownpost(Request $request){
         $user=Auth::user();
-        $post=Post::orderBy('created_at','desc')->get()->where('user_id',$user->id);
+        if($request->filter=="all"){
+            $post=Post::orderBy('created_at','desc')->get()->where('user_id',$user->id);
+        }else if($request->filter=="image"){
+            $post=Post::orderBy('created_at','desc')->where('user_id',$user->id)->where('media_type',1)->get();
+        }else{
+            $post=Post::orderBy('created_at','desc')->where('user_id',$user->id)->where('media_type',0)->get();
+        }
         return view('homepage',array('user' => $user,'post'=>$post));
+
     }
-    public function getaddForm(){
-        return view('Post.addpost');
-    }
-    public function getallposts(){
-        $post=Post::all();
+public function getaddForm(){
+    $country=Country::all();
+    return view('Post.addpost',['country'=>$country]);
+}
+    public function getallposts(Request $request){
+        $post=Post::with('country')->groupBy('country_id')->get();
         // dd($post);
-        // $user=User::all();
-        return view('Post.getallpost',['post'=>$post]);
-    }
+        if($request->country=="all"){
+            $post1=Post::all();
+        }else{
+            $post1=Post::all()->where('country_id',$request->country);
+        }
+        return view('Post.getallpost',array('post'=>$post,'post1'=>$post1));
+     }
     public function addPost(AddPostFormRequest $request){
         $post= new Post;
         // $post->user();
@@ -48,6 +61,7 @@ class PostController extends Controller
         elseif(substr($files->getMimeType(), 0, 5) == 'video'){
             $post->media_type=0;
         }
+        $post->country_id=$request->post_country;
         // dd($request->user()->posts());
         if($request->user()->posts()->save($post)){
             return redirect()->route('home')->with('success','Post created Successfully!!');
@@ -74,7 +88,8 @@ class PostController extends Controller
     }
     public function editPost($id){
         $post=Post::find($id);
-        return view('Post.editpost',['post'=>$post]);
+        $country=Country::all();
+        return view('Post.editpost',array('post'=>$post,'country'=>$country));
     }
     public function updatePost(EditPostFormRequest $request, $id){
         // echo $id;
@@ -93,6 +108,7 @@ class PostController extends Controller
         elseif(substr($files->getMimeType(), 0, 5) == 'video'){
             $post->media_type=0;
         }
+        $post->country_id=$request->post_country;
         $post->update();
         return redirect()->route('home')->with('success','Post Details Updated Successfully!!');
     }

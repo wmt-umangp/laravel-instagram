@@ -27,6 +27,7 @@ class AddPostFormRequest extends FormRequest
             'title'=>'required|max:120',
             'desc'=>'required|max:300',
             'post_image'=>'required|mimes:jpg,jpeg,png,gif,mp4,ogg,ogv,avi,mpeg,mov,wmv,flv,mkv|max:5000',
+            'post_country'=>'required',
         ];
     }
     public function messages()
@@ -39,6 +40,7 @@ class AddPostFormRequest extends FormRequest
             'post_image.required'=>'Please Upload Post Image',
             'post_image.mimes'=>'Only jpg,jpeg,png,gif,mp4,ogg,ogv,avi,mpeg,mov,wmv,flv,mkv image or video extension are allowed',
             'post_image.max'=>'File should be less than 5MB',
+            'post_country.required'=>'Please Select Country',
         ];
     }
 }

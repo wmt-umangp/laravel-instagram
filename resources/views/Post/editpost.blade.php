@@ -34,6 +34,20 @@
                             <span class="text-danger">*{{ $errors->first('post_image') }}</span>
                         @endif
                     </div>
+
+                    <div class="mb-3 mt-3">
+                        <label for="post_country" class="form-label">Select Country</label>
+                        <select name="post_country" id="post_country" class="form-select">
+                            <option value="" selected disabled>Select Country</option>
+                            @foreach ($country as $c)
+
+                                <option value="{{$c->id}}" @if ($post->country_id==$c->id) {{'selected'}} @endif>{{$c->country_name}}</option>
+                            @endforeach
+                        </select>
+                        @if ($errors->has('post_country'))
+                            <span class="text-danger">*{{ $errors->first('post_country') }}</span>
+                        @endif
+                    </div>
                     <button type="submit" class="btn btn-primary">Edit Post</button>
                 </form>
             </div>
