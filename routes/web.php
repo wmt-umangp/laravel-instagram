@@ -13,7 +13,7 @@ Route::post('/signup/signupUser',[UserController::class,'postSignUp'])->name('si
 
 //to display  signin page
 Route::get('/',[UserController::class,'showsignin'])->name('showsignin')->middleware('access');
-Route::get('/login/admin',[UserController::class,'showAdminLoginForm'])->middleware('access');
+Route::get('/login/admin',[UserController::class,'showAdminLoginForm'])->name('alogin')->middleware('access');
 
 // for signin
 Route::post('/signinUser',[UserController::class,'postSignIn'])->name('signin');

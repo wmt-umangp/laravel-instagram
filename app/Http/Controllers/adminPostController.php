@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
-
+use Auth;
+use Session;
 class adminPostController extends Controller
 {
 
@@ -18,7 +19,7 @@ class adminPostController extends Controller
         if(Auth::guard('admin')->check()){
             Auth::guard('admin')->logout();
             session::flush();
-            return redirect()->route('showsignin');
+            return redirect()->route('alogin');
         }
     }
 }
