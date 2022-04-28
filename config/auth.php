@@ -40,6 +40,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        // 'user'=>[
+        //     'driver'=>'session',
+        //     'provider'=>'user',
+        // ],
+        'admin'=>[
+            'driver'=>'session',
+            'provider'=>'admins',
+        ]
     ],
 
     /*
@@ -60,15 +68,18 @@ return [
     */
 
     'providers' => [
+        // 'user'=>[
+        //     'driver'=>'eloquent',
+        //     'model'=>App\Models\User::class,
+        // ],
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'admins'=>[
+            'driver'=>'eloquent',
+            'model'=>App\Models\Admin::class
+        ]
     ],
 
     /*

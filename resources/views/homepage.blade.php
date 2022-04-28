@@ -66,44 +66,6 @@
             @endforeach
         </div>
     </div>
-
-  {{-- <script>
-      $('#filter').on('change',function(){
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        // console.log('Hello');
-        var type=$('#filter').val();
-        // console.log(type);
-        var url="{{route('filterpost')}}";
-        var bookimgpath="{{asset(Storage::disk('local')->url('public/bookimg/'))}}"+"/"
-        var imgpath="{{asset('storage/post_images/User-'.Auth::user()->id.'_'.Auth::user()->uname)}}"+"/"
-        console.log(imgpath);
-        // console.log(url,type);
-
-        $.ajax({
-            type: "GET",
-            url: url,
-            data: {
-                filter_type:type,
-            },
-            success: function(data){
-                // console.log(data);
-                // console.log(imgpath+data['post_media']);
-                $.each(data, function(key,val) {
-                    // console.log(val);
-                    // console.log(key,val['post_media']);
-                    // console.log(imgpath+val['post_media']);
-                    // $('.imgpost1').attr('src',imgpath+val['post_media']);
-                    // $('source').attr('src',imgpath+val['post_media']);
-                });
-            }
-        });
-        // console.log("Hello");
-      });
-  </script> --}}
 @endsection
 
 

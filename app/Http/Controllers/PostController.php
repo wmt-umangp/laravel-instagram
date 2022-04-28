@@ -112,33 +112,6 @@ public function getaddForm(){
         $post->update();
         return redirect()->route('home')->with('success','Post Details Updated Successfully!!');
     }
-    // public function filterpost(Request $request){
-
-    //     // if($request['filter_type']=='all'){
-    //     //     $post=Post::all('post_media');
-    //     //     return response()->json($post);
-    //     // }
-    //     // elseif($request['filter_type']=='image'){
-    //     //     $post1=Post::where('media_type',1)->get('post_media');
-    //     //     return response()->json($post1);
-    //     // }
-    //     // elseif($request['filter_type']=='video'){
-    //     //     $post2=Post::where('media_type',0)->get('post_media');
-    //     //     return response()->json($post2);
-    //     // }
-    //     // if($request->filter=='image'){
-    //     //     // dd($request->filter);
-    //     //     $user=Auth::user();
-    //     //     $post1=Post::where('media_type',1)->get('post_media');
-    //     //     return view('homepage',array('user' => $user,'post'=>$post1));
-    //     // }
-    //     // else if($request->filter=='video'){
-    //     //     $user=Auth::user();
-    //     //     $post2=Post::where('media_type',0)->get('post_media');
-    //     //     return view('homepage',array('user' => $user,'post'=>$post2));
-    //     // }
-    // }
-
     public function save_like(Request $request,$id){
         $like= new Like;
         $like->post_id=$id;

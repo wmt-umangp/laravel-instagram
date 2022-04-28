@@ -6,15 +6,32 @@ use App\Http\Requests\SignUpFormRequest;
 use App\Http\Requests\SignInFormRequest;
 use App\Http\Requests\EditUserAccountFormRequest;
 use App\Models\User;
+use App\Models\Post;
 use Hash, Auth, Session, Storage;
 
 class UserController extends Controller
 {
+   public function __constrcut(){
+        $this->middleware('guest')->except('logout');
+   }
    public function showsignup(){
         return view('User.signup');
    }
    public function showsignin(){
         return view('User.signin');
+   }
+   public function showAdminLoginForm(){
+        return view('User.signin',array('url'=>'admin',));
+   }
+   public function adminLogin(Request $request){
+        $request->validate([
+            'uname'=>'required|max:15',
+            'password' => 'required|min:8',
+        ]);
+        if(Auth::guard('admin')->attempt(['name'=>$request->uname,'password'=>$request->password])){
+            return redirect()->intended('/admin');
+        }
+        return redirect()->back()->with('logerror','Invalid Admin Credentials');
    }
    public function postSignUp(SignUpFormRequest $request){
     $user=new User;
@@ -46,7 +63,8 @@ class UserController extends Controller
     public function postSignIn(SignInFormRequest $req){
         $uname=$req->input('uname');
         $password=$req->input('password');
-        if(Auth::attempt(['uname' => $uname, 'password' => $password])){
+        // Auth::guard('admin')->attempt(['name'=>$request->uname,'password'=>$request->password]);
+        if(Auth::guard('web')->attempt(['uname' => $uname, 'password' => $password])){
             Session::put('log',$uname);
             echo "Logined Successfully!!";
             return redirect()->route('home')->with('logined','You have Successfully loggedin');
@@ -84,8 +102,10 @@ class UserController extends Controller
         return redirect()->route('account');
     }
     public function getLogout(){
-        Auth::logout();
+      if(Auth::guard('web')->check()){
+        Auth::guard('web')->logout();
         session::flush();
         return redirect()->route('showsignin');
+      }
     }
 }

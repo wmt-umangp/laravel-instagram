@@ -1,9 +1,9 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\adminPostController;
 
 // to display signup page
 Route::get('/signup',[UserController::class,'showsignup'])->name('showsignup')->middleware('access');
@@ -12,13 +12,19 @@ Route::get('/signup',[UserController::class,'showsignup'])->name('showsignup')->
 Route::post('/signup/signupUser',[UserController::class,'postSignUp'])->name('signup');
 
 //to display  signin page
-Route::get('/',[UserController::class,'showsignin'])->name('showsignin')->middleware('access');;
+Route::get('/',[UserController::class,'showsignin'])->name('showsignin')->middleware('access');
+Route::get('/login/admin',[UserController::class,'showAdminLoginForm'])->middleware('access');
 
 // for signin
 Route::post('/signinUser',[UserController::class,'postSignIn'])->name('signin');
+Route::post('/login/admin',[UserController::class,'adminLogin']);
 
+Route::middleware('auth:admin')->group(function(){
+    Route::get('/admin',[adminPostController::class,'getadminhome'])->name('admin');
+    Route::get('/admin/getallposts',[adminPostController::class,'admingetallposts'])->name('adallposts');
+});
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth','auth:web')->group(function () {
     //for welcome page
     Route::get('/welcome',[PostController::class,'getHome'])->name('welcome');
 
@@ -73,5 +79,5 @@ Route::middleware('auth')->group(function () {
 // for logout
 Route::get('/logout',[UserController::class,'getLogout'])->name('logout');
 
-
+Route::get('/alogout',[adminPostController::class,'alogout'])->name('alogout');
 

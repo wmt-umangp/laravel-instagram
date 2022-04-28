@@ -13,9 +13,13 @@
             </div>
 
             <div class="px-3">
-                <p class="mb-1 h-1">Login</p>
+                <p class="mb-1 h-1">{{ isset($url) ? ucwords($url) : '' }} Login</p>
                 <div>
+                    @isset($url)
+                        <form action='{{url("login/$url")}}' method="POST" id="signin">
+                    @else
                     <form action="{{route('signin')}}" method="POST" id="signin">
+                    @endisset
                         @csrf
                         <div class="mb-3 mt-3 pmd-textfield">
                             <label for="uname" class="form-label">Username</label>
